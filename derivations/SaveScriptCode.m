@@ -8,90 +8,108 @@ fileName = strcat('SymbolicOutput',int2str(nStates),'.txt');
 fid = fopen(fileName,'wt');
 
 %% Write equation for state transition matrix
-fprintf(fid,'SF = zeros(%d,1);\n',numel(SF));
-for rowIndex = 1:numel(SF)
-    string = char(SF(rowIndex,1));
-    fprintf(fid,'SF(%d) = %s;\n',rowIndex,string);
+if exist('SF','var')
+    
+    fprintf(fid,'SF = zeros(%d,1);\n',numel(SF));
+    for rowIndex = 1:numel(SF)
+        string = char(SF(rowIndex,1));
+        fprintf(fid,'SF(%d) = %s;\n',rowIndex,string);
+    end
+    
+    % fprintf(fid,'\n');
+    % fprintf(fid,'F = zeros(%d,%d);\n',nStates,nStates);
+    % for rowIndex = 1:nStates
+    %     for colIndex = 1:nStates
+    %         string = char(F(rowIndex,colIndex));
+    %         % don't write out a zero-assignment
+    %         if ~strcmpi(string,'0')
+    %             fprintf(fid,'F(%d,%d) = %s;\n',rowIndex,colIndex,string);
+    %         end
+    %     end
+    % end
+    % fprintf(fid,'\n');
+    
 end
-
-% fprintf(fid,'\n');
-% fprintf(fid,'F = zeros(%d,%d);\n',nStates,nStates);
-% for rowIndex = 1:nStates
-%     for colIndex = 1:nStates
-%         string = char(F(rowIndex,colIndex));
-%         % don't write out a zero-assignment
-%         if ~strcmpi(string,'0')
-%             fprintf(fid,'F(%d,%d) = %s;\n',rowIndex,colIndex,string);
-%         end
-%     end
-% end
-% fprintf(fid,'\n');
-
 %% Write equations for control influence (disturbance) matrix
-fprintf(fid,'\n');
-fprintf(fid,'SG = zeros(%d,1);\n',numel(SG));
-for rowIndex = 1:numel(SG)
-    string = char(SG(rowIndex,1));
-    fprintf(fid,'SG(%d) = %s;\n',rowIndex,string);
+if exist('SG','var')
+    
+    fprintf(fid,'\n');
+    fprintf(fid,'SG = zeros(%d,1);\n',numel(SG));
+    for rowIndex = 1:numel(SG)
+        string = char(SG(rowIndex,1));
+        fprintf(fid,'SG(%d) = %s;\n',rowIndex,string);
+    end
+    fprintf(fid,'\n');
+    
+    % fprintf(fid,'\n');
+    % fprintf(fid,'G = zeros(%d,%d);\n',nStates,numel([da;dv]));
+    % for rowIndex = 1:nStates
+    %     for colIndex = 1:numel([da;dv])
+    %         string = char(G(rowIndex,colIndex));
+    %         % don't write out a zero-assignment
+    %         if ~strcmpi(string,'0')
+    %             fprintf(fid,'G(%d,%d) = %s;\n',rowIndex,colIndex,string);
+    %         end
+    %     end
+    % end
+    % fprintf(fid,'\n');
+    
 end
-fprintf(fid,'\n');
-
-% fprintf(fid,'\n');
-% fprintf(fid,'G = zeros(%d,%d);\n',nStates,numel([da;dv]));
-% for rowIndex = 1:nStates
-%     for colIndex = 1:numel([da;dv])
-%         string = char(G(rowIndex,colIndex));
-%         % don't write out a zero-assignment
-%         if ~strcmpi(string,'0')
-%             fprintf(fid,'G(%d,%d) = %s;\n',rowIndex,colIndex,string);
-%         end
-%     end
-% end
-% fprintf(fid,'\n');
-
 %% Write equations for state error matrix
-fprintf(fid,'\n');
-fprintf(fid,'SQ = zeros(%d,1);\n',numel(SQ));
-for rowIndex = 1:numel(SQ)
-    string = char(SQ(rowIndex,1));
-    fprintf(fid,'SQ(%d) = %s;\n',rowIndex,string);
+if exist('SQ','var')
+    
+    fprintf(fid,'\n');
+    fprintf(fid,'SQ = zeros(%d,1);\n',numel(SQ));
+    for rowIndex = 1:numel(SQ)
+        string = char(SQ(rowIndex,1));
+        fprintf(fid,'SQ(%d) = %s;\n',rowIndex,string);
+    end
+    fprintf(fid,'\n');
+    
+    % fprintf(fid,'\n');
+    % fprintf(fid,'Q = zeros(%d,%d);\n',nStates,nStates);
+    % for rowIndex = 1:nStates
+    %     for colIndex = 1:nStates
+    %         string = char(Q(rowIndex,colIndex));
+    %         % don't write out a zero-assignment
+    %         if ~strcmpi(string,'0')
+    %             fprintf(fid,'Q(%d,%d) = %s;\n',rowIndex,colIndex,string);
+    %         end
+    %     end
+    % end
+    % fprintf(fid,'\n');
+    
 end
-fprintf(fid,'\n');
-
-% fprintf(fid,'\n');
-% fprintf(fid,'Q = zeros(%d,%d);\n',nStates,nStates);
-% for rowIndex = 1:nStates
-%     for colIndex = 1:nStates
-%         string = char(Q(rowIndex,colIndex));
-%         % don't write out a zero-assignment
-%         if ~strcmpi(string,'0')
-%             fprintf(fid,'Q(%d,%d) = %s;\n',rowIndex,colIndex,string);
-%         end
-%     end
-% end
-% fprintf(fid,'\n');
-
 %% Write equations for covariance prediction
-fprintf(fid,'\n');
-fprintf(fid,'SPP = zeros(%d,1);\n',numel(SPP));
-for rowIndex = 1:numel(SPP)
-    string = char(SPP(rowIndex,1));
-    fprintf(fid,'SPP(%d) = %s;\n',rowIndex,string);
+% Only write out upper diagonal (matrix is symmetric)
+if exist('SPP','var')
+    
+    fprintf(fid,'\n');
+    fprintf(fid,'SPP = zeros(%d,1);\n',numel(SPP));
+    for rowIndex = 1:numel(SPP)
+        string = char(SPP(rowIndex,1));
+        fprintf(fid,'SPP(%d) = %s;\n',rowIndex,string);
+    end
+    fprintf(fid,'\n');
+    
 end
-fprintf(fid,'\n');
 
-fprintf(fid,'\n');
-fprintf(fid,'nextP = zeros(%d,%d);\n',nStates,nStates);
-for rowIndex = 1:nStates
+if exist('PP','var')
+    
+    fprintf(fid,'\n');
+    fprintf(fid,'nextP = zeros(%d,%d);\n',nStates,nStates);
     for colIndex = 1:nStates
-        string = char(PP(rowIndex,colIndex));
-        % don't write out a zero-assignment
-        if ~strcmpi(string,'0')
-            fprintf(fid,'nextP(%d,%d) = %s;\n',rowIndex,colIndex,string);
+        for rowIndex = 1:colIndex
+            string = char(PP(rowIndex,colIndex));
+            % don't write out a zero-assignment
+            if ~strcmpi(string,'0')
+                fprintf(fid,'nextP(%d,%d) = %s;\n',rowIndex,colIndex,string);
+            end
         end
     end
+    fprintf(fid,'\n');
+    
 end
-fprintf(fid,'\n');
 
 %% Write equations for velocity and position data fusion
 if exist('H_VP','var')
@@ -373,6 +391,13 @@ if exist('SH_LOS','var')
         end
     end
     
+%     fprintf(fid,'\n');
+%     fprintf(fid,'SKK_LOS = zeros(%d,1);\n',numel(SKK_LOS));
+%     for rowIndex = 1:numel(SKK_LOS)
+%         string = char(SKK_LOS(rowIndex,1));
+%         fprintf(fid,'SKK_LOS(%d) = %s;\n',rowIndex,string);
+%     end
+    
     fprintf(fid,'\n');
     fprintf(fid,'SK_LOS = zeros(%d,1);\n',numel(SK_LOS));
     for rowIndex = 1:numel(SK_LOS)
@@ -384,7 +409,7 @@ if exist('SH_LOS','var')
     fprintf(fid,'\n');
     fprintf(fid,'Kfusion = zeros(%d,1);\n',nRow,nCol);
     for rowIndex = 1:nRow
-        string = char(K_LOS(rowIndex,1));
+        string = char(K_LOSX(rowIndex));
         % don't write out a zero-assignment
         if ~strcmpi(string,'0')
             fprintf(fid,'Kfusion(%d) = %s;\n',rowIndex,string);
@@ -396,12 +421,61 @@ if exist('SH_LOS','var')
     fprintf(fid,'\n');
     fprintf(fid,'Kfusion = zeros(%d,1);\n',nRow,nCol);
     for rowIndex = 1:nRow
-        string = char(K_LOS(rowIndex,2));
+        string = char(K_LOSY(rowIndex));
         % don't write out a zero-assignment
         if ~strcmpi(string,'0')
             fprintf(fid,'Kfusion(%d) = %s;\n',rowIndex,string);
         end
     end
+    
+end
+%% Write observation fusion equations for optical flow sensor scale factor error estimation
+if exist('SH_OPT','var')
+    
+    fprintf(fid,'\n');
+    for rowIndex = 1:numel(SH_OPT)
+        string = char(SH_OPT(rowIndex,1));
+        fprintf(fid,'SH_OPT(%d) = %s;\n',rowIndex,string);
+    end
+    fprintf(fid,'\n');
+    
+    fprintf(fid,'\n');
+        string = char(H_OPT(1));
+        % don't write out a zero-assignment
+        if ~strcmpi(string,'0')
+            fprintf(fid,'H_OPT(1) = %s;\n',1,string);
+        end
+    fprintf(fid,'\n');
+    
+    fprintf(fid,'\n');
+        string = char(H_OPT(2));
+        % don't write out a zero-assignment
+        if ~strcmpi(string,'0')
+            fprintf(fid,'H_OPT(2) = %s;\n',1,string);
+        end
+    fprintf(fid,'\n');
+    
+    fprintf(fid,'\n');
+    for rowIndex = 1:numel(SK_OPT)
+        string = char(SK_OPT(rowIndex,1));
+        fprintf(fid,'SK_OPT(%d) = %s;\n',rowIndex,string);
+    end
+    
+    fprintf(fid,'\n');
+        string = char(K_OPT(1));
+        % don't write out a zero-assignment
+        if ~strcmpi(string,'0')
+            fprintf(fid,'K_OPT(1) = %s;\n',1,string);
+        end
+    fprintf(fid,'\n');
+    
+    fprintf(fid,'\n');
+        string = char(K_OPT(2));
+        % don't write out a zero-assignment
+        if ~strcmpi(string,'0')
+            fprintf(fid,'K_OPT(2) = %s;\n',1,string);
+        end
+    fprintf(fid,'\n');
     
 end
 %% Write equations for laser range finder data fusion
@@ -449,6 +523,189 @@ if exist('SH_RNG','var')
     fprintf(fid,'\n');
     
 end
+
+%% Write equations for simple magnetomter data fusion
+if exist('SH_MAGS','var')
+    
+    fprintf(fid,'\n');
+    fprintf(fid,'SH_MAGS = zeros(%d,1);\n',numel(SH_MAGS));
+    for rowIndex = 1:numel(SH_MAGS)
+        string = char(SH_MAGS(rowIndex,1));
+        fprintf(fid,'SH_MAGS(%d) = %s;\n',rowIndex,string);
+    end
+    fprintf(fid,'\n');
+    
+    [nRow,nCol] = size(H_MAGS);
+    fprintf(fid,'\n');
+    fprintf(fid,'H_MAGS = zeros(1,%d);\n',nCol);
+    for colIndex = 1:nCol
+        string = char(H_MAGS(1,colIndex));
+        % don't write out a zero-assignment
+        if ~strcmpi(string,'0')
+            fprintf(fid,'H_MAGS(%d) = %s;\n',colIndex,string);
+        end
+    end
+    fprintf(fid,'\n');
+        
+    fprintf(fid,'\n');
+    fprintf(fid,'SK_MAGS = zeros(%d,1);\n',numel(SK_MAGS));
+    for rowIndex = 1:numel(SK_MAGS)
+        string = char(SK_MAGS(rowIndex,1));
+        fprintf(fid,'SK_MAGS(%d) = %s;\n',rowIndex,string);
+    end
+    fprintf(fid,'\n');
+    
+    [nRow,nCol] = size(K_MAGS);
+    fprintf(fid,'\n');
+    fprintf(fid,'Kfusion = zeros(%d,1);\n',nRow,nCol);
+    for rowIndex = 1:nRow
+        string = char(K_MAGS(rowIndex,1));
+        % don't write out a zero-assignment
+        if ~strcmpi(string,'0')
+            fprintf(fid,'Kfusion(%d) = %s;\n',rowIndex,string);
+        end
+    end
+    fprintf(fid,'\n');
+end
+
+%% Write equations for X accel fusion
+if exist('SH_ACCX','var')
+    
+    fprintf(fid,'\n');
+    fprintf(fid,'SH_ACCX = zeros(%d,1);\n',numel(SH_ACCX));
+    for rowIndex = 1:numel(SH_ACCX)
+        string = char(SH_ACCX(rowIndex,1));
+        fprintf(fid,'SH_ACCX(%d) = %s;\n',rowIndex,string);
+    end
+    
+    [nRow,nCol] = size(H_ACCX);
+    fprintf(fid,'\n');
+    fprintf(fid,'H_ACCX = zeros(1,%d);\n',nCol);
+    for rowIndex = 1:nRow
+        for colIndex = 1:nCol
+            string = char(H_ACCX(rowIndex,colIndex));
+            % don't write out a zero-assignment
+            if ~strcmpi(string,'0')
+                fprintf(fid,'H_ACCX(1,%d) = %s;\n',colIndex,string);
+            end
+        end
+    end
+    fprintf(fid,'\n');
+    
+    fprintf(fid,'\n');
+    fprintf(fid,'SK_ACCX = zeros(%d,1);\n',numel(SK_ACCX));
+    for rowIndex = 1:numel(SK_ACCX)
+        string = char(SK_ACCX(rowIndex,1));
+        fprintf(fid,'SK_ACCX(%d) = %s;\n',rowIndex,string);
+    end
+    fprintf(fid,'\n');
+    
+    [nRow,nCol] = size(K_ACCX);
+    fprintf(fid,'\n');
+    fprintf(fid,'Kfusion = zeros(%d,1);\n',nRow,nCol);
+    for rowIndex = 1:nRow
+        string = char(K_ACCX(rowIndex,1));
+        % don't write out a zero-assignment
+        if ~strcmpi(string,'0')
+            fprintf(fid,'Kfusion(%d) = %s;\n',rowIndex,string);
+        end
+    end
+    fprintf(fid,'\n');
+    
+end
+
+%% Write equations for Y accel fusion
+if exist('SH_ACCY','var')
+    
+    fprintf(fid,'\n');
+    fprintf(fid,'SH_ACCY = zeros(%d,1);\n',numel(SH_ACCY));
+    for rowIndex = 1:numel(SH_ACCY)
+        string = char(SH_ACCY(rowIndex,1));
+        fprintf(fid,'SH_ACCY(%d) = %s;\n',rowIndex,string);
+    end
+    
+    [nRow,nCol] = size(H_ACCY);
+    fprintf(fid,'\n');
+    fprintf(fid,'H_ACCY = zeros(1,%d);\n',nCol);
+    for rowIndex = 1:nRow
+        for colIndex = 1:nCol
+            string = char(H_ACCY(rowIndex,colIndex));
+            % don't write out a zero-assignment
+            if ~strcmpi(string,'0')
+                fprintf(fid,'H_ACCY(1,%d) = %s;\n',colIndex,string);
+            end
+        end
+    end
+    fprintf(fid,'\n');
+    
+    fprintf(fid,'\n');
+    fprintf(fid,'SK_ACCY = zeros(%d,1);\n',numel(SK_ACCY));
+    for rowIndex = 1:numel(SK_ACCY)
+        string = char(SK_ACCY(rowIndex,1));
+        fprintf(fid,'SK_ACCY(%d) = %s;\n',rowIndex,string);
+    end
+    fprintf(fid,'\n');
+    
+    [nRow,nCol] = size(K_ACCY);
+    fprintf(fid,'\n');
+    fprintf(fid,'Kfusion = zeros(%d,1);\n',nRow,nCol);
+    for rowIndex = 1:nRow
+        string = char(K_ACCY(rowIndex,1));
+        % don't write out a zero-assignment
+        if ~strcmpi(string,'0')
+            fprintf(fid,'Kfusion(%d) = %s;\n',rowIndex,string);
+        end
+    end
+    fprintf(fid,'\n');
+    
+end
+
+%% Write equations for range beacon data fusion
+if exist('SH_BCN','var')
+    
+    fprintf(fid,'\n');
+    fprintf(fid,'SH_BCN = zeros(%d,1);\n',numel(SH_BCN));
+    for rowIndex = 1:numel(SH_BCN)
+        string = char(SH_BCN(rowIndex,1));
+        fprintf(fid,'SH_BCN(%d) = %s;\n',rowIndex,string);
+    end
+    
+    [nRow,nCol] = size(H_BCN);
+    fprintf(fid,'\n');
+    fprintf(fid,'H_BCN = zeros(1,%d);\n',nCol);
+    for rowIndex = 1:nRow
+        for colIndex = 1:nCol
+            string = char(H_BCN(rowIndex,colIndex));
+            % don't write out a zero-assignment
+            if ~strcmpi(string,'0')
+                fprintf(fid,'H_BCN(1,%d) = %s;\n',colIndex,string);
+            end
+        end
+    end
+    fprintf(fid,'\n');
+    
+    fprintf(fid,'\n');
+    fprintf(fid,'SK_BCN = zeros(%d,1);\n',numel(SK_BCN));
+    for rowIndex = 1:numel(SK_BCN)
+        string = char(SK_BCN(rowIndex,1));
+        fprintf(fid,'SK_BCN(%d) = %s;\n',rowIndex,string);
+    end
+    fprintf(fid,'\n');
+    
+    [nRow,nCol] = size(K_BCN);
+    fprintf(fid,'\n');
+    fprintf(fid,'Kfusion = zeros(%d,1);\n',nRow,nCol);
+    for rowIndex = 1:nRow
+        string = char(K_BCN(rowIndex,1));
+        % don't write out a zero-assignment
+        if ~strcmpi(string,'0')
+            fprintf(fid,'Kfusion(%d) = %s;\n',rowIndex,string);
+        end
+    end
+    fprintf(fid,'\n');
+    
+end
+
 %% Close output file
 fclose(fid);
 
